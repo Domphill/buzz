@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Buzz</title>
+    <meta name="description" content="Makes your Android phone vibrate: choose how strong, what pattern, and for how long." />
+    <meta name="theme-color" content="#12081f" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Buzz" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="src/app.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="top">
+        <span class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="3" width="8" height="18" rx="2" />
+            <path d="M4.5 8.5v7M19.5 8.5v7M1.5 10v4M22.5 10v4" />
+          </svg>
+        </span>
+        <h1>Buzz</h1>
+      </header>
+      <p class="nope" id="nope" hidden></p>
+      <section class="hero">
+        <button class="go" id="go" type="button" aria-pressed="false" aria-describedby="status">
+          <span class="go-ring" aria-hidden="true"></span>
+          <span class="go-label" id="go-label">Start</span>
+        </button>
+        <p class="status" id="status" role="status" aria-live="polite">Ready</p>
+      </section>
+      <section class="card">
+        <div class="row-head"><label for="level">Intensity</label><output id="level-out" for="level">70%</output></div>
+        <input type="range" id="level" min="10" max="100" step="5" value="70" aria-label="Intensity" />
+        <p class="hint">Slide, then let go to feel it.</p>
+      </section>
+      <section class="card">
+        <h2>Pattern</h2>
+        <div class="chips" id="mode" role="radiogroup" aria-label="Pattern"></div>
+        <div id="speed-row" hidden>
+          <h2>Speed</h2>
+          <div class="chips" id="speed" role="radiogroup" aria-label="Speed"></div>
+        </div>
+      </section>
+      <section class="card">
+        <h2>Stop after</h2>
+        <div class="chips" id="minutes" role="radiogroup" aria-label="Stop after"></div>
+      </section>
+      <section class="card">
+        <label class="switch"><input type="checkbox" id="awake" /><span>Keep the screen on while buzzing</span></label>
+        <p class="hint">Android stops the motor when the screen goes off or another app comes to the front.</p>
+      </section>
+      <footer class="foot">Nothing leaves your phone. Works in Chrome, Samsung Internet and Firefox on Android. iPhones don’t let web pages vibrate.</footer>
+    </main>
+    <script src="src/app.js"></script>
+    <script>
+      /* Offline support for the hosted version (https, or a local test server). */
+      (function () {
+        if (!('serviceWorker' in navigator)) return;
+        var local = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+        if (location.protocol !== 'https:' && !local) return;
+        window.addEventListener('load', function () {
+          navigator.serviceWorker.register('sw.js').catch(function (e) {
+            console.warn('Buzz: offline support unavailable', e);
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
